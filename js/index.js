@@ -133,7 +133,7 @@ function source_check() {
 function setupreviewpage() {
     $('#loading_animation').css('display', 'block');
     $('#content').css('display', 'none');
-    $('#review_page .page_heading').html(source.toUpperCase());
+    $('#review_page .page_heading').html(source);
     showpage('review_page');
 }
 
@@ -153,7 +153,6 @@ function getsource() {
 function gotData(data) {
     $('#content').css('display', 'block');
     $('#loading_animation').css('display', 'none');
-    $('#review_page .font_list h2').html('Fonts in ' + source);
     display_fonts_and_colors(data, 'review_page');
     $('#savestyle').click(function() {
         var ref = database.ref('styles/' + username);
@@ -176,8 +175,7 @@ function valid(url) {
 
 function setupdetailspage(firebase_id) {
     // $('#saved_style_content').empty();
-    $('#saved_style_page .page_heading').html(styles[firebase_id].source.toUpperCase());
-    $('#saved_style_page .font_list').append('<h2> Fonts in ' + styles[firebase_id].source + '</h2>');
+    $('#saved_style_page .page_heading').html(styles[firebase_id].source);
     display_fonts_and_colors(styles[firebase_id], 'saved_style_page');
     $('#visit_site').click(function() {
         window.open(styles[firebase_id].url, '_blank')
@@ -188,6 +186,7 @@ function setupdetailspage(firebase_id) {
 function display_fonts_and_colors(data, page_id) {
   $('#' + page_id + ' .color_palette').empty();
   $('#' + page_id + ' .font_list').empty();
+  $('#' + page_id + ' .font_list').append('<h2> Fonts in ' + data.source + '</h2>');
     for (i = data.colors.length - 1; i >= 0; i--) {
         $('#' + page_id + ' .color_palette').append('<div class="color_tile_big ' + data.colors[i].slice(1) + '">' + data.colors[i] + '</div>');
         $("." + data.colors[i].slice(1)).css('background-color', data.colors[i]);
@@ -210,12 +209,12 @@ function display_fonts_and_colors(data, page_id) {
 
 //Page navigation
 function showpage(switchtopage) {
+    window.scrollTo(0, 0);
     var login_page = $('#login_page');
     var list_page = $('#list_page');
     var add_new_page = $('#add_new_page');
     var review_page = $('#review_page');
     var saved_style_page = $('#saved_style_page');
-
     switch (switchtopage) {
         case 'login_page':
             login_page.css('display', 'block');
